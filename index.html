@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Marks Entry</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #eee; }
+    input[type=number] { width: 60px; }
+  </style>
+</head>
+<body>
+  <h2>Marks Entry</h2>
+  <label>Class: <input id="class" value="7"></label>
+  <label>Section: <input id="section" value="A"></label>
+  <label>Subject: <input id="subject" value="Math"></label>
+  <label>Test Type: <input id="testType" value="Class Test"></label>
+  <label>Test Name: <input id="testName" value="CT-1"></label>
+  <label>Max Marks: <input id="maxMarks" type="number" value="20"></label>
+  <label>Teacher: <input id="teacher" value="T001"></label>
+  <button onclick="loadStudents()">Load Students</button>
+
+  <form id="marksForm" onsubmit="submitMarks(event)">
+    <table id="studentsTable"></table>
+    <button type="submit">Submit Marks</button>
+  </form>
+
+<script>
+const API_URL = "YOUR_WEB_APP_URL_HERE"; // replace with Apps Script URL
+
+function loadStudents() {
+  const cls = document.getElementById("class").value;
+  const sec = document.getElementById("section").value;
+  fetch(`${API_URL}?action=getStudents&class=${cls}&section=${sec}`)
+    .then(res => res.json())
+    .then(data => {
+      const table = document.getElementById("studentsTable");
+      table.innerHTML = "<tr><th>Roll No</th><th>Name</th><th>Marks</th></tr>";
+      data.forEach(stu => {
+        table.innerHTML += `
+          <tr>
+            <td>${stu.rollNo}</td>
+            <td>${stu.name}</td>
+            <td><input type="number" name="marks_${stu.studentId}"></td>
+          </tr>`;
+      });
+    });
+}
+
+function submitMarks(e) {
+  e.preventDefault();
+  const rows = document.querySelectorAll("#studentsTable tr");
+  const cls = document.getElementById("class").value;
+  const sec = document.getElementById("section").value;
+  const subj = document.getElementById("subject").value;
+  const ttype = document.getElementById("testType").value;
+  const tname = document.getElementById("testName").value;
+  const maxMarks = document.getElementById("maxMarks").value;
+  const teacher = document.getElementById("teacher").value;
+
+  const data = [];
+  rows.forEach((row, i) => {
+    if (i === 0) return; // skip header
+    const studentId = row.querySelector("input").name.split("_")[1];
+    const obtained = row.querySelector("input").value;
+    data.push({
+      studentId, class: cls, section: sec,
+      subject: subj, testType: ttype, testName: tname,
+      maxMarks, obtainedMarks: obtained, teacher
+    });
+  });
+
+  fetch(`${API_URL}?action=submitMarks`, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(msg => alert(msg));
+}
+</script>
+</body>
+</html>
