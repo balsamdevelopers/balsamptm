@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<!-- saved from url=(0041)file:///C:/Users/welcome/Desktop/app.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Brain Test: Final Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            color: #333;
+            margin-top: 50px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        h1 {
+            color: #4b0082;
+        }
+        p {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .option-button {
+            padding: 15px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option-button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .result-box {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .result-box.correct-answer {
+            background-color: #f0fff0;
+            border: 1px solid #ccffcc;
+        }
+        .result-box.wrong-answer {
+            background-color: #fff3f3;
+            border: 1px solid #ffcccc;
+        }
+        .result-box p {
+            margin: 5px 0;
+            font-weight: normal;
+        }
+        .result-box .your-answer {
+            font-weight: bold;
+        }
+        .result-box .correct-text {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .result-box .wrong-text {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+        }
+        .nav-buttons button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 0 5px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+        }
+        .nav-buttons button:hover {
+            opacity: 0.8;
+        }
+        #start-button, #play-again-button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #start-button:hover, #play-again-button:hover {
+            background-color: #218838;
+        }
+        #submit-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submit-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="start-page">
+            <h1>Brain Test Challenge</h1>
+            <p>Test your brain with these tricky riddles!</p>
+            <button id="start-button" onclick="startGame()">Start Game</button>
+        </div>
+
+        <div id="game-section" class="hidden">
+            <p id="riddle">Loading...</p>
+            <div id="question-counter"></div>
+            <div class="options-container" id="optionsContainer"></div>
+            <div class="nav-buttons">
+                <button onclick="previousRiddle()">Previous</button>
+                <button onclick="nextRiddle()">Next</button>
+            </div>
+            <button id="submit-button" onclick="submitAnswers()">Submit</button>
+        </div>
+
+        <div id="results-section" class="hidden">
+            <h2>Game Over!</h2>
+            <h3 id="final-score"></h3>
+            <div id="answers-review-list"></div>
+            <button id="play-again-button" onclick="playAgain()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const startPage = document.getElementById('start-page');
+        const gameSection = document.getElementById('game-section');
+        const resultsSection = document.getElementById('results-section');
+        const riddleText = document.getElementById('riddle');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const questionCounter = document.getElementById('question-counter');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const answersReviewList = document.getElementById('answers-review-list');
+        const playAgainButton = document.getElementById('play-again-button');
+
+        const allRiddles = [
+            { question: "What has to be broken before you can use it?", answer: "egg", options: ["egg", "brick", "glass", "rock", "nut", "shell"] },
+            { question: "I'm tall when I'm young, and short when I'm old. What am I?", answer: "candle", options: ["tree", "candle", "person", "building", "river", "mountain"] },
+            { question: "What month of the year has 28 days?", answer: "all of them", options: ["february", "march", "april", "january", "all of them", "june"] },
+            { question: "What is full of holes but still holds water?", answer: "sponge", options: ["net", "basket", "sponge", "colander", "leaky bag", "sieve"] },
+            { question: "What goes up but never comes down?", answer: "your age", options: ["price", "rocket", "your age", "balloon", "smoke", "kite"] },
+            { question: "What has an eye but cannot see?", answer: "needle", options: ["eye", "needle", "potato", "cyclops", "storm", "button"] },
+            { question: "What has a neck but no head?", answer: "bottle", options: ["sweater", "giraffe", "bottle", "guitar", "shirt", "river"] },
+            { question: "What has a face and two hands, but no arms or legs?", answer: "clock", options: ["watch", "person", "clock", "scarecrow", "statue", "mirror"] },
+            { question: "What can you catch but not throw?", answer: "a cold", options: ["ball", "a cold", "a fish", "a fly", "your breath", "a secret"] },
+            { question: "What is always in front of you but can't be seen?", answer: "the future", options: ["your phone", "the future", "a ghost", "your reflection", "a shadow", "your nose"] },
+            { question: "What is so fragile that saying its name breaks it?", answer: "silence", options: ["glass", "ice", "silence", "a promise", "a heart", "a secret"] },
+            { question: "What gets wetter the more it dries?", answer: "a towel", options: ["a sponge", "a plant", "a towel", "a car", "a river", "a person"] },
+            { question: "What has keys but can't open locks?", answer: "piano", options: ["computer", "door", "piano", "organ", "car", "keyboard"] },
+            { question: "What belongs to you, but other people use it more than you do?", answer: "your name", options: ["your car", "your home", "your name", "your phone", "your money", "your clothes"] },
+            { question: "What is full of words but never speaks?", answer: "a book", options: ["a dictionary", "a phone", "a letter", "a magazine", "a book", "a sign"] },
+            { question: "What can travel all over the world without leaving its corner?", answer: "a stamp", options: ["a postcard", "a plane", "a train", "a coin", "a stamp", "a letter"] },
+            { question: "What is an animal that can jump higher than a house?", answer: "any animal", options: ["a horse", "a kangaroo", "a flea", "a rabbit", "a monkey", "any animal"] },
+            { question: "What has a thumb and four fingers but is not alive?", answer: "a glove", options: ["a mitten", "a sock", "a glove", "a hand", "a shoe", "a puppet"] },
+            { question: "What goes up and down but never moves?", answer: "a staircase", options: ["an elevator", "a person", "a seesaw", "a ball", "a staircase", "a kite"] },
+            { question: "What is always coming but never arrives?", answer: "tomorrow", options: ["a train", "tomorrow", "an opportunity", "an apology", "a secret", "a guest"] },
+            { question: "What word is spelled incorrectly in every single dictionary?", answer: "incorrectly", options: ["wrongly", "incorrectly", "faultily", "perfectly", "perfect", "correctly"] },
+            { question: "What has a head and a tail but no body?", answer: "a coin", options: ["a snake", "a person", "a coin", "a key", "a stick", "a cat"] },
+            { question: "I am always hungry and will die if not fed, but anything I drink will kill me. What am I?", answer: "fire", options: ["a person", "a ghost", "a plant", "fire", "a monster", "a zombie"] },
+            { question: "I'm always running but never get tired. What am I?", answer: "water", options: ["an athlete", "a river", "water", "a clock", "a car", "a person"] },
+            { question: "What gets broken without being touched?", answer: "a promise", options: ["a glass", "a mirror", "a promise", "a phone", "a heart", "a car"] },
+            { question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", answer: "a map", options: ["a globe", "a book", "a painting", "a map", "a drawing", "a board game"] },
+            { question: "What can be measured but has no length, width, or height?", answer: "temperature", options: ["sound", "temperature", "time", "light", "smell", "speed"] },
+            { question: "What has many teeth but cannot bite?", answer: "a comb", options: ["a shark", "a saw", "a zipper", "a rake", "a comb", "a gear"] },
+            { question: "What has a bottom at the top?", answer: "your legs", options: ["a bucket", "a tree", "your legs", "a chair", "a mountain", "a bottle"] },
+            { question: "What question can you never answer 'yes' to?", answer: "are you asleep yet", options: ["are you hungry", "are you awake", "are you alive", "are you asleep yet", "are you happy", "are you ready"] },
+            { question: "What has no voice but can tell you a story?", answer: "a book", options: ["a movie", "a person", "a friend", "a book", "a song", "a painting"] },
+            { question: "The more of this you take, the more you leave behind. What is it?", answer: "footsteps", options: ["pictures", "memories", "footsteps", "dirt", "leaves", "food"] },
+            { question: "What has an eye, but is blind?", answer: "a potato", options: ["a needle", "a cyclops", "a knot", "a rope", "a hook", "a potato"] },
+            { question: "I have a big mouth and a big stomach, but I'm not a person. What am I?", answer: "a trash can", options: ["a bag", "a trash can", "a whale", "a river", "a cave", "a house"] },
+            { question: "I have no life, but I can die. What am I?", answer: "a battery", options: ["a lightbulb", "a battery", "a television", "a computer", "a phone", "a car"] },
+            { question: "What can be stolen, but never held?", answer: "a glance", options: ["a wallet", "a promise", "a secret", "a glance", "a kiss", "a car"] },
+            { question: "I am always hungry and will die if not fed. What am I?", answer: "fire", options: ["a person", "a ghost", "a plant", "fire", "a monster", "a zombie"] },
+            { question: "What runs but never walks, has a mouth but never talks, has a head but never weeps, and a bed but never sleeps?", answer: "a river", options: ["a person", "a car", "a river", "a bed", "a mouth", "a horse"] },
+            { question: "I have a spine but no bones. What am I?", answer: "a book", options: ["a fish", "a plant", "a person", "a book", "a knife", "a snake"] },
+            { question: "What is cut on a table, but is never eaten?", answer: "a deck of cards", options: ["a cake", "a steak", "a pizza", "a book", "a deck of cards", "a tree"] },
+            { question: "I am an odd number. Take away a letter and I become even. What number am I?", answer: "seven", options: ["nine", "three", "seven", "five", "one", "eleven"] },
+            { question: "What has a ring but no finger?", answer: "a telephone", options: ["a planet", "a tree", "a bell", "a telephone", "a circus", "a door"] },
+            { question: "What can't be put into a pot?", answer: "a lid", options: ["a finger", "a hand", "a lid", "a spoon", "a fork", "a knife"] },
+            { question: "I have no voice, but can tell you every detail of my past. What am I?", answer: "a photograph", options: ["a painting", "a movie", "a photograph", "a book", "a letter", "a diary"] },
+            { question: "What has cities, but no houses, forests, but no trees, and water, but no fish?", answer: "a map", options: ["a world", "a globe", "a planet", "a map", "a drawing", "a picture"] },
+            { question: "I can be spread, but I am not butter. What am I?", answer: "gossip", options: ["a rumor", "a disease", "a blanket", "a blanket", "a cloth", "gossip"] },
+            { question: "What is something you can only hold in your right hand, but not in your left?", answer: "your left hand", options: ["your right hand", "a pen", "your left hand", "a phone", "a key", "a ball"] },
+            { question: "What gets bigger the more you think about it?", answer: "a worry", options: ["a fear", "a thought", "a dream", "a memory", "a wish", "a worry"] },
+            { question: "I have a trunk but no keys. What am I?", answer: "an elephant", options: ["a car", "a tree", "an elephant", "a boat", "a door", "a treasure chest"] },
+            { question: "What is full of keys, but can’t open a door?", answer: "a piano", options: ["a keyboard", "a lock", "a safe", "a piano", "a suitcase", "a ring"] }
+        ];
+
+        let riddles = []; // This will hold the 5 riddles for the current game
+        let currentRiddleIndex = 0;
+        let playerAnswers = Array(5).fill(null);
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startGame() {
+            // Select 5 random riddles for this game
+            riddles = shuffleArray([...allRiddles]).slice(0, 5);
+            
+            startPage.classList.add('hidden');
+            gameSection.classList.remove('hidden');
+            loadRiddle(currentRiddleIndex);
+        }
+
+        function loadRiddle(index) {
+            if (index < 0 || index >= riddles.length) {
+                return;
+            }
+
+            currentRiddleIndex = index;
+            const currentRiddle = riddles[currentRiddleIndex];
+            riddleText.innerText = currentRiddle.question;
+            optionsContainer.innerHTML = '';
+            questionCounter.innerText = `Riddle ${currentRiddleIndex + 1} of ${riddles.length}`;
+
+            const shuffledOptions = currentRiddle.options.sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option-button';
+                button.innerText = option.charAt(0).toUpperCase() + option.slice(1);
+                button.onclick = () => selectAnswer(option);
+
+                if (playerAnswers[currentRiddleIndex] === option) {
+                    button.style.backgroundColor = '#6c757d';
+                }
+
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectAnswer(userAnswer) {
+            playerAnswers[currentRiddleIndex] = userAnswer;
+            
+            document.querySelectorAll('.option-button').forEach(button => {
+                button.style.backgroundColor = '#007bff';
+                if (button.innerText.toLowerCase().trim() === userAnswer.toLowerCase().trim()) {
+                    button.style.backgroundColor = '#6c757d';
+                }
+            });
+        }
+
+        function nextRiddle() {
+            if (currentRiddleIndex < riddles.length - 1) {
+                loadRiddle(currentRiddleIndex + 1);
+            }
+        }
+
+        function previousRiddle() {
+            if (currentRiddleIndex > 0) {
+                loadRiddle(currentRiddleIndex - 1);
+            }
+        }
+
+        function submitAnswers() {
+            let score = 0;
+            riddles.forEach((riddle, index) => {
+                const userAnswer = playerAnswers[index];
+                if (userAnswer && userAnswer.toLowerCase().trim() === riddle.answer.toLowerCase().trim()) {
+                    score++;
+                }
+            });
+            showResults(score);
+        }
+
+        function showResults(score) {
+            gameSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+
+            finalScoreDisplay.innerText = `You got ${score} out of ${riddles.length} correct!`;
+            answersReviewList.innerHTML = '';
+
+            riddles.forEach((riddle, index) => {
+                const resultBox = document.createElement('div');
+                const userAnswer = playerAnswers[index] || "No Answer";
+                const isCorrect = userAnswer.toLowerCase().trim() === riddle.answer.toLowerCase().trim();
+                
+                resultBox.className = `result-box ${isCorrect ? 'correct-answer' : 'wrong-answer'}`;
+                
+                const questionText = document.createElement('p');
+                questionText.innerHTML = `<strong>Question:</strong> ${riddle.question}`;
+                resultBox.appendChild(questionText);
+
+                const yourAnswerText = document.createElement('p');
+                yourAnswerText.innerHTML = `<strong>Your Answer:</strong> <span class="${isCorrect ? 'correct-text' : 'wrong-text'}">${userAnswer}</span>`;
+                resultBox.appendChild(yourAnswerText);
+
+                const correctAnswerText = document.createElement('p');
+                correctAnswerText.innerHTML = `<strong>Correct Answer:</strong> <span class="correct-text">${riddle.answer}</span>`;
+                resultBox.appendChild(correctAnswerText);
+                
+                answersReviewList.appendChild(resultBox);
+            });
+        }
+
+        function playAgain() {
+            // Reset game state
+            currentRiddleIndex = 0;
+            playerAnswers = Array(5).fill(null);
+            
+            // Show the start page and hide the results page
+            resultsSection.classList.add('hidden');
+            startPage.classList.remove('hidden');
+        }
+
+    </script>
+
+
+</body></html>
