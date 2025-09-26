@@ -1,83 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Marks Entry</title>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background: #eee; }
-    input[type=number] { width: 60px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nature & Animals Quiz</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-  <h2>Marks Entry</h2>
-  <label>Class: <input id="class" value="7"></label>
-  <label>Section: <input id="section" value="A"></label>
-  <label>Subject: <input id="subject" value="Math"></label>
-  <label>Test Type: <input id="testType" value="Class Test"></label>
-  <label>Test Name: <input id="testName" value="CT-1"></label>
-  <label>Max Marks: <input id="maxMarks" type="number" value="20"></label>
-  <label>Teacher: <input id="teacher" value="T001"></label>
-  <button onclick="loadStudents()">Load Students</button>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🌲 Nature & Animals Quiz 🦁</h1>
+            <div class="header-controls">
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="restartBtn" class="restart-btn">
+                    <i class="fas fa-redo"></i> Restart
+                </button>
+            </div>
+        </header>
 
-  <form id="marksForm" onsubmit="submitMarks(event)">
-    <table id="studentsTable"></table>
-    <button type="submit">Submit Marks</button>
-  </form>
+        <!-- Score Section -->
+        <div class="score-section">
+            <div class="score-item">
+                <i class="fas fa-star"></i>
+                <span>Score: <span id="currentScore">0</span></span>
+            </div>
+            <div class="score-item">
+                <i class="fas fa-question-circle"></i>
+                <span>Question: <span id="questionNumber">1</span> / 75</span>
+            </div>
+            <div class="score-item">
+                <i class="fas fa-percentage"></i>
+                <span>Correct: <span id="accuracy">0%</span></span>
+            </div>
+        </div>
 
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyEvsOiNwPBr6wME30ulZ1UeOYdSRpFgVEAxt5KVwX8w2Gh1Yk_L67AyzgzxySDkWZ9hg/exec"; // replace with Apps Script URL
+        <!-- Quiz Container -->
+        <div class="quiz-container">
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="welcome-screen">
+                <div class="welcome-content">
+                    <h2>Welcome to the Nature & Animals Quiz!</h2>
+                    <div class="welcome-icons">
+                        <span>🦋</span>
+                        <span>🐨</span>
+                        <span>🌺</span>
+                        <span>🦉</span>
+                        <span>🌳</span>
+                    </div>
+                    <p>Test your knowledge about amazing animals and beautiful nature!</p>
+                    <button id="startQuiz" class="start-btn">
+                        <i class="fas fa-play"></i> Start Quiz
+                    </button>
+                </div>
+            </div>
 
-function loadStudents() {
-  const cls = document.getElementById("class").value;
-  const sec = document.getElementById("section").value;
-  fetch(`${API_URL}?action=getStudents&class=${cls}&section=${sec}`)
-    .then(res => res.json())
-    .then(data => {
-      const table = document.getElementById("studentsTable");
-      table.innerHTML = "<tr><th>Roll No</th><th>Name</th><th>Marks</th></tr>";
-      data.forEach(stu => {
-        table.innerHTML += `
-          <tr>
-            <td>${stu.rollNo}</td>
-            <td>${stu.name}</td>
-            <td><input type="number" name="marks_${stu.studentId}"></td>
-          </tr>`;
-      });
-    });
-}
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="quiz-screen hidden">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                
+                <div class="question-container">
+                    <h3 id="questionText" class="question-text"></h3>
+                    <div id="answersContainer" class="answers-container"></div>
+                </div>
 
-function submitMarks(e) {
-  e.preventDefault();
-  const rows = document.querySelectorAll("#studentsTable tr");
-  const cls = document.getElementById("class").value;
-  const sec = document.getElementById("section").value;
-  const subj = document.getElementById("subject").value;
-  const ttype = document.getElementById("testType").value;
-  const tname = document.getElementById("testName").value;
-  const maxMarks = document.getElementById("maxMarks").value;
-  const teacher = document.getElementById("teacher").value;
+                <div class="quiz-controls">
+                    <button id="nextBtn" class="next-btn hidden">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
 
-  const data = [];
-  rows.forEach((row, i) => {
-    if (i === 0) return; // skip header
-    const studentId = row.querySelector("input").name.split("_")[1];
-    const obtained = row.querySelector("input").value;
-    data.push({
-      studentId, class: cls, section: sec,
-      subject: subj, testType: ttype, testName: tname,
-      maxMarks, obtainedMarks: obtained, teacher
-    });
-  });
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="results-screen hidden">
+                <div class="results-content">
+                    <h2>🎉 Quiz Complete! 🎉</h2>
+                    <div class="final-score">
+                        <div class="score-circle">
+                            <span id="finalScore">0</span>
+                            <small>out of 75</small>
+                        </div>
+                    </div>
+                    <div class="results-stats">
+                        <div class="stat">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Correct: <span id="correctAnswers">0</span></span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Incorrect: <span id="incorrectAnswers">0</span></span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-percentage"></i>
+                            <span>Accuracy: <span id="finalAccuracy">0%</span></span>
+                        </div>
+                    </div>
+                    <div id="resultMessage" class="result-message"></div>
+                    <button id="playAgainBtn" class="play-again-btn">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  fetch(`${API_URL}?action=submitMarks`, {
-    method: "POST",
-    body: JSON.stringify(data)
-  })
-  .then(res => res.text())
-  .then(msg => alert(msg));
-}
-</script>
+    <script src="app.js"></script>
 </body>
 </html>
