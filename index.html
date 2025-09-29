@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PTM Booking - Parent Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .suggestions {
+      border: 1px solid #ddd;
+      border-top: none;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>PTM Booking System</h2>
+    <div class="form-group">
+      <label for="studentSearch">Search Student Name:</label>
+      <input type="text" id="studentSearch" placeholder="Start typing student name...">
+      <div id="suggestions" class="suggestions"></div>
+    </div>
+    
+    <div class="form-group">
+      <label for="studentName">Selected Student:</label>
+      <input type="text" id="studentName" readonly>
+    </div>
+    
+    <div class="form-group">
+      <label for="classSection">Class & Section:</label>
+      <input type="text" id="classSection" readonly>
+    </div>
+    
+    <div class="form-group">
+      <label for="admissionNumber">Admission Number:</label>
+      <input type="text" id="admissionNumber" readonly>
+    </div>
+    
+    <button id="submitBtn" onclick="bookSlot()" disabled>Book Time Slot</button>
+    
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let selectedStudent = null;
+    
+    document.getElementById('studentSearch').addEventListener('input', function(e) {
+      const query = e.target.value;
+      if (query.length >= 2) {
+        searchStudents(query);
+      } else {
+        document.getElementById('suggestions').style.display = 'none';
+      }
+    });
+    
+    function searchStudents(query) {
+      google.script.run
+        .withSuccessHandler(displaySuggestions)
+        .withFailureHandler(showError)
+        .searchStudents(query);
+    }
+    
+    function displaySuggestions(students) {
+      const suggestionsDiv = document.getElementById('suggestions');
+      suggestionsDiv.innerHTML = '';
+      
+      if (students.length > 0) {
+        students.forEach(student => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.textContent = `${student.name} - ${student.classSection}`;
+          div.onclick = () => selectStudent(student);
+          suggestionsDiv.appendChild(div);
+        });
+        suggestionsDiv.style.display = 'block';
+      } else {
+        suggestionsDiv.style.display = 'none';
+      }
+    }
+    
+    function selectStudent(student) {
+      selectedStudent = student;
+      document.getElementById('studentName').value = student.name;
+      document.getElementById('classSection').value = student.classSection;
+      document.getElementById('admissionNumber').value = student.admissionNumber;
+      document.getElementById('studentSearch').value = '';
+      document.getElementById('suggestions').style.display = 'none';
+      document.getElementById('submitBtn').disabled = false;
+    }
+    
+    function bookSlot() {
+      if (!selectedStudent) return;
+      
+      document.getElementById('submitBtn').disabled = true;
+      document.getElementById('submitBtn').textContent = 'Booking...';
+      
+      const params = {
+        action: 'bookSlot',
+        studentName: selectedStudent.name,
+        classSection: selectedStudent.classSection,
+        admissionNumber: selectedStudent.admissionNumber
+      };
+      
+      google.script.run
+        .withSuccessHandler(handleBookingResponse)
+        .withFailureHandler(handleBookingError)
+        .bookTimeSlot(params);
+    }
+    
+    function handleBookingResponse(response) {
+      const resultDiv = document.getElementById('result');
+      if (response.success) {
+        resultDiv.className = 'result success';
+        resultDiv.innerHTML = `
+          <h3>Booking Successful!</h3>
+          <p>Your time slot: <strong>${response.timeSlot}</strong></p>
+          <p>Please proceed to the respective classroom.</p>
+        `;
+      } else {
+        resultDiv.className = 'result error';
+        resultDiv.innerHTML = response.message;
+      }
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('submitBtn').textContent = 'Book Time Slot';
+    }
+    
+    function handleBookingError(error) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.className = 'result error';
+      resultDiv.textContent = 'An error occurred. Please try again.';
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('submitBtn').textContent = 'Book Time Slot';
+    }
+    
+    function showError(error) {
+      console.error('Error:', error);
+    }
+  </script>
+</body>
+</html>
