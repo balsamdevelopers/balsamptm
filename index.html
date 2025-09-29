@@ -35,28 +35,62 @@
         <div id="result"></div>
     </div>
 
-    <script>
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+<script>
+    // Add this at the top - replace with your actual URL
+    const API_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+    document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const studentName = document.getElementById('studentName').value;
+        const classSection = document.getElementById('classSection').value;
+        const admissionNumber = document.getElementById('admissionNumber').value;
+        
+        const submitBtn = document.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Booking...';
+        
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'bookSlot',
+                    studentName: studentName,
+                    classSection: classSection,
+                    admissionNumber: admissionNumber
+                })
+            });
             
-            const studentName = document.getElementById('studentName').value;
-            const classSection = document.getElementById('classSection').value;
-            const admissionNumber = document.getElementById('admissionNumber').value;
-            
-            // This is where we'll add Google Apps Script integration
-            // For now, just show a success message
+            const result = await response.json();
             const resultDiv = document.getElementById('result');
-            resultDiv.className = 'result success';
-            resultDiv.innerHTML = `
-                <h3>Booking Received!</h3>
-                <p>Your time slot will be assigned when you visit the school.</p>
-                <p><strong>Student:</strong> ${studentName}</p>
-                <p><strong>Class:</strong> ${classSection}</p>
-            `;
             
-            // Clear form
-            document.getElementById('bookingForm').reset();
-        });
-    </script>
+            if (result.success) {
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = `
+                    <h3>Booking Successful! ✅</h3>
+                    <p>Your time slot: <strong>${result.timeSlot}</strong></p>
+                    <p>Please proceed to the classroom.</p>
+                    <p><strong>Student:</strong> ${studentName}</p>
+                    <p><strong>Class:</strong> ${classSection}</p>
+                `;
+            } else {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = result.message;
+            }
+            
+        } catch (error) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result error';
+            resultDiv.innerHTML = 'Network error. Please try again.';
+        }
+        
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Time Slot';
+        document.getElementById('bookingForm').reset();
+    });
+</script>
 </body>
 </html>
