@@ -550,7 +550,7 @@
 
         // Load CSV file
         function loadQuestions() {
-            Papa.parse('questions.csv', {
+            Papa.parse('nishaltrial2.csv', {
                 download: true,
                 header: true,
                 complete: function(results) {
@@ -562,7 +562,7 @@
                         document.getElementById('loadingText').textContent = 'Ready to start!';
                         document.getElementById('startBtn').classList.remove('hidden');
                     } else {
-                        document.getElementById('loadingText').textContent = 'Error loading questions. Please check questions.csv file.';
+                        document.getElementById('loadingText').textContent = 'Error loading questions. Please check nishaltrial2.csv file.';
                     }
                 },
                 error: function(error) {
@@ -715,4 +715,5 @@
         loadQuestions();
     </script>
 </body>
+
 </html>
