@@ -485,7 +485,7 @@ const incorrectCount = document.getElementById('incorrectCount');
 // Load questions from CSV file
 async function loadQuestions() {
     try {
-        const response = await fetch('quiz_questions.csv');
+        const response = await fetch('nishaltrial.csv');
         const csvText = await response.text();
         
         // Parse CSV
@@ -516,7 +516,7 @@ async function loadQuestions() {
         
     } catch (error) {
         console.error('Error loading questions:', error);
-        alert('Failed to load quiz questions. Please make sure quiz_questions.csv is in the same directory.');
+        alert('Failed to load quiz questions. Please make sure nishaltrial.csv is in the same directory.');
     }
 }
 
@@ -719,4 +719,5 @@ startButton.textContent = 'Loading Questions...';
 loadQuestions();
 </script>
 </body>
+
 </html>
