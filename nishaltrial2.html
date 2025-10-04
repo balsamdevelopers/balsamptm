@@ -53,7 +53,7 @@
             height: 100%;
             background-image: 
                 linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-                linear-градиент(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridMove 20s linear infinite;
         }
@@ -124,9 +124,13 @@
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px 15px;
             position: relative;
             z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .intro-screen, .quiz-screen, .result-screen {
@@ -134,40 +138,43 @@
             backdrop-filter: blur(10px);
             border: 2px solid rgba(100, 150, 255, 0.3);
             border-radius: 20px;
-            padding: 60px 40px;
+            padding: 30px 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         h1 {
-            font-size: 3.5em;
+            font-size: 2em;
             text-align: center;
             background: linear-gradient(45deg, #00d4ff, #7b2ff7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-shadow: 0 0 30px rgba(123, 47, 247, 0.5);
         }
 
         .subtitle {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1em;
             color: #a0b0ff;
-            margin-bottom: 50px;
+            margin-bottom: 25px;
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
             background: rgba(50, 40, 100, 0.5);
             border: 2px solid rgba(123, 47, 247, 0.4);
             border-radius: 15px;
-            padding: 30px;
+            padding: 20px 15px;
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
         }
@@ -178,7 +185,7 @@
         }
 
         .stat-number {
-            font-size: 3em;
+            font-size: 2em;
             font-weight: bold;
             background: linear-gradient(45deg, #ff6b9d, #c471ed);
             -webkit-background-clip: text;
@@ -187,20 +194,20 @@
         }
 
         .stat-label {
-            font-size: 1.1em;
+            font-size: 0.9em;
             color: #b0c0ff;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .loading {
             background: linear-gradient(90deg, #7b2ff7, #00d4ff, #7b2ff7);
             background-size: 200% 100%;
             animation: shimmer 2s infinite;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             border-radius: 10px;
-            font-size: 1.3em;
-            margin-top: 30px;
+            font-size: 1.1em;
+            margin-top: 20px;
         }
 
         @keyframes shimmer {
@@ -212,9 +219,9 @@
             display: block;
             width: 100%;
             max-width: 300px;
-            margin: 30px auto 0;
-            padding: 18px 40px;
-            font-size: 1.3em;
+            margin: 20px auto 0;
+            padding: 15px 30px;
+            font-size: 1.1em;
             font-weight: bold;
             color: white;
             background: linear-gradient(45deg, #7b2ff7, #00d4ff);
@@ -234,56 +241,58 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
 
         .progress-info {
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: #a0b0ff;
         }
 
         .score-info {
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: bold;
             color: #00ff88;
         }
 
         .category-tag {
             background: rgba(123, 47, 247, 0.3);
-            padding: 8px 20px;
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 0.95em;
+            font-size: 0.85em;
             color: #c0d0ff;
             border: 1px solid rgba(123, 47, 247, 0.5);
+            flex-basis: 100%;
+            text-align: center;
         }
 
         .question-card {
             background: rgba(40, 30, 80, 0.6);
             border-radius: 15px;
-            padding: 40px;
-            margin-bottom: 30px;
+            padding: 20px 15px;
+            margin-bottom: 20px;
         }
 
         .question-text {
-            font-size: 1.8em;
-            margin-bottom: 40px;
+            font-size: 1.2em;
+            margin-bottom: 20px;
             line-height: 1.4;
             color: #e0e8ff;
         }
 
         .options {
             display: grid;
-            gap: 15px;
+            gap: 12px;
         }
 
         .option {
             background: rgba(60, 50, 120, 0.5);
             border: 2px solid rgba(100, 150, 255, 0.3);
             border-radius: 12px;
-            padding: 20px 25px;
-            font-size: 1.1em;
+            padding: 15px 18px;
+            font-size: 1em;
             cursor: pointer;
             transition: all 0.3s;
             color: white;
@@ -317,14 +326,15 @@
 
         .nav-buttons {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .nav-btn {
-            padding: 12px 30px;
-            font-size: 1.1em;
+            padding: 12px 25px;
+            font-size: 1em;
             font-weight: bold;
             color: white;
             background: rgba(123, 47, 247, 0.7);
@@ -345,16 +355,16 @@
         }
 
         .result-screen h2 {
-            font-size: 2.5em;
+            font-size: 2em;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             color: #00d4ff;
         }
 
         .final-score {
-            font-size: 4em;
+            font-size: 3em;
             text-align: center;
-            margin: 30px 0;
+            margin: 20px 0;
             background: linear-gradient(45deg, #ff6b9d, #c471ed, #00d4ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -363,26 +373,95 @@
 
         .result-message {
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.2em;
             color: #b0c0ff;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
         }
 
         .result-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .hidden {
             display: none;
         }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5em; }
-            .question-text { font-size: 1.4em; }
-            .intro-screen, .quiz-screen, .result-screen { padding: 30px 20px; }
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .intro-screen, .quiz-screen, .result-screen {
+                padding: 40px 30px;
+            }
+
+            h1 { 
+                font-size: 3em;
+            }
+
+            .subtitle {
+                font-size: 1.2em;
+                margin-bottom: 40px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                margin-bottom: 35px;
+            }
+
+            .stat-card {
+                padding: 25px 20px;
+            }
+
+            .stat-number {
+                font-size: 2.5em;
+            }
+
+            .stat-label {
+                font-size: 1em;
+            }
+
+            .category-tag {
+                flex-basis: auto;
+            }
+
+            .question-card {
+                padding: 30px 25px;
+            }
+
+            .question-text {
+                font-size: 1.6em;
+                margin-bottom: 30px;
+            }
+
+            .option {
+                padding: 18px 22px;
+                font-size: 1.05em;
+            }
+
+            .result-screen h2 {
+                font-size: 2.5em;
+                margin-bottom: 30px;
+            }
+
+            .final-score {
+                font-size: 4em;
+                margin: 30px 0;
+            }
+
+            .result-message {
+                font-size: 1.4em;
+                margin-bottom: 35px;
+            }
+
+            .result-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
         }
     </style>
 </head>
@@ -418,8 +497,8 @@
                 <div class="progress-info">
                     Question <span id="currentQ">1</span> of <span id="totalQ">80</span>
                 </div>
-                <div class="category-tag" id="categoryTag">Category</div>
                 <div class="score-info">Score: <span id="score">0</span></div>
+                <div class="category-tag" id="categoryTag">Category</div>
             </div>
 
             <div class="question-card">
@@ -550,7 +629,7 @@
 
         // Load CSV file
         function loadQuestions() {
-            Papa.parse('nishaltrial2.csv', {
+            Papa.parse('questions.csv', {
                 download: true,
                 header: true,
                 complete: function(results) {
@@ -562,7 +641,7 @@
                         document.getElementById('loadingText').textContent = 'Ready to start!';
                         document.getElementById('startBtn').classList.remove('hidden');
                     } else {
-                        document.getElementById('loadingText').textContent = 'Error loading questions. Please check nishaltrial2.csv file.';
+                        document.getElementById('loadingText').textContent = 'Error loading questions. Please check questions.csv file.';
                     }
                 },
                 error: function(error) {
@@ -715,5 +794,5 @@
         loadQuestions();
     </script>
 </body>
-
 </html>
+
