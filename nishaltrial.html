@@ -34,7 +34,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 .screen {
@@ -52,39 +52,41 @@ body {
     backdrop-filter: blur(10px);
     border: 2px solid rgba(147, 112, 219, 0.3);
     border-radius: 12px;
-    padding: 32px;
+    padding: 20px 15px;
     box-shadow: 0 0 30px rgba(147, 112, 219, 0.4);
+    max-height: 98vh;
+    overflow-y: auto;
 }
 
 .title {
-    font-size: 48px;
+    font-size: 1.6em;
     font-weight: bold;
     text-align: center;
     background: linear-gradient(135deg, #9370db, #4169e1, #00ced1);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     text-shadow: 0 0 20px rgba(0, 206, 209, 0.5);
 }
 
 .subtitle {
     text-align: center;
-    font-size: 18px;
+    font-size: 0.85em;
     color: #b5b5c3;
-    margin-bottom: 32px;
+    margin-bottom: 15px;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
-    margin: 32px 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 15px 0;
 }
 
 .stat-box {
     text-align: center;
-    padding: 20px;
+    padding: 15px 10px;
     border-radius: 8px;
     border: 1px solid;
 }
@@ -105,7 +107,7 @@ body {
 }
 
 .stat-number {
-    font-size: 32px;
+    font-size: 1.5em;
     font-weight: bold;
 }
 
@@ -122,15 +124,15 @@ body {
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 0.75em;
     color: #b5b5c3;
-    margin-top: 4px;
+    margin-top: 5px;
 }
 
 .btn-primary {
     width: 100%;
-    padding: 16px 32px;
-    font-size: 18px;
+    padding: 12px 25px;
+    font-size: 1em;
     font-weight: 600;
     color: white;
     background: linear-gradient(135deg, #9370db, #4169e1);
@@ -139,7 +141,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 0 30px rgba(147, 112, 219, 0.4);
-    margin-top: 32px;
+    margin-top: 15px;
 }
 
 .btn-primary:hover {
@@ -148,13 +150,13 @@ body {
 }
 
 .progress-section {
-    margin-bottom: 24px;
+    margin-bottom: 15px;
 }
 
 .progress-info {
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
+    font-size: 0.85em;
     color: #b5b5c3;
     margin-bottom: 8px;
 }
@@ -184,30 +186,30 @@ body {
     background: rgba(65, 105, 225, 0.2);
     border: 1px solid rgba(65, 105, 225, 0.3);
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 0.75em;
     color: #4169e1;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .question-text {
-    font-size: 24px;
+    font-size: 1.05em;
     font-weight: bold;
-    line-height: 1.5;
-    margin-bottom: 24px;
+    line-height: 1.4;
+    margin-bottom: 15px;
     color: #e5e7f0;
 }
 
 .options-grid {
     display: grid;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .option-btn {
     width: 100%;
-    padding: 16px 24px;
+    padding: 12px 15px;
     text-align: left;
-    font-size: 16px;
+    font-size: 0.95em;
     background: transparent;
     border: 2px solid rgba(147, 112, 219, 0.3);
     border-radius: 8px;
@@ -254,52 +256,52 @@ body {
 }
 
 .result-title {
-    font-size: 48px;
+    font-size: 1.5em;
     font-weight: bold;
     text-align: center;
     background: linear-gradient(135deg, #9370db, #4169e1, #00ced1);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 32px;
+    margin-bottom: 15px;
 }
 
 .result-score {
     text-align: center;
-    padding: 32px 0;
+    padding: 15px 0;
 }
 
 .final-score {
-    font-size: 80px;
+    font-size: 2.5em;
     font-weight: bold;
     color: #9370db;
     animation: pulse 2s ease-in-out infinite;
 }
 
 .percentage {
-    font-size: 32px;
+    font-size: 1.5em;
     font-weight: 600;
     color: #4169e1;
-    margin-top: 16px;
+    margin-top: 10px;
 }
 
 .result-message {
     text-align: center;
-    font-size: 20px;
+    font-size: 1em;
     font-weight: 500;
-    margin: 24px 0;
+    margin: 15px 0;
     color: #e5e7f0;
 }
 
 .result-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin: 32px 0;
+    gap: 10px;
+    margin: 15px 0;
 }
 
 .result-stat {
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     text-align: center;
     border: 1px solid;
@@ -316,7 +318,7 @@ body {
 }
 
 .result-stat-number {
-    font-size: 28px;
+    font-size: 1.5em;
     font-weight: bold;
 }
 
@@ -329,7 +331,7 @@ body {
 }
 
 .result-stat-label {
-    font-size: 12px;
+    font-size: 0.75em;
     color: #b5b5c3;
     margin-top: 4px;
 }
@@ -354,21 +356,110 @@ body {
     }
 }
 
-@media (max-width: 768px) {
-    .title {
-        font-size: 32px;
+@media (min-width: 768px) {
+    #app {
+        padding: 20px;
     }
-    
-    .question-text {
-        font-size: 20px;
-    }
-    
-    .final-score {
-        font-size: 60px;
-    }
-    
+
     .card {
-        padding: 24px;
+        padding: 32px;
+    }
+
+    .title {
+        font-size: 3em;
+        margin-bottom: 16px;
+    }
+
+    .subtitle {
+        font-size: 1.125em;
+        margin-bottom: 32px;
+    }
+
+    .stats-grid {
+        gap: 16px;
+        margin: 32px 0;
+    }
+
+    .stat-box {
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 2em;
+    }
+
+    .stat-label {
+        font-size: 0.75em;
+    }
+
+    .btn-primary {
+        padding: 16px 32px;
+        font-size: 1.125em;
+        margin-top: 32px;
+    }
+
+    .progress-section {
+        margin-bottom: 24px;
+    }
+
+    .progress-info {
+        font-size: 0.875em;
+    }
+
+    .category-badge {
+        font-size: 0.75em;
+        margin-bottom: 16px;
+    }
+
+    .question-text {
+        font-size: 1.5em;
+        margin-bottom: 24px;
+    }
+
+    .options-grid {
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .option-btn {
+        padding: 16px 24px;
+        font-size: 1em;
+    }
+
+    .result-title {
+        font-size: 3em;
+        margin-bottom: 32px;
+    }
+
+    .result-score {
+        padding: 32px 0;
+    }
+
+    .final-score {
+        font-size: 5em;
+    }
+
+    .percentage {
+        font-size: 2em;
+        margin-top: 16px;
+    }
+
+    .result-message {
+        font-size: 1.25em;
+        margin: 24px 0;
+    }
+
+    .result-stats {
+        gap: 16px;
+        margin: 32px 0;
+    }
+
+    .result-stat {
+        padding: 20px;
+    }
+
+    .result-stat-number {
+        font-size: 1.75em;
     }
 }
     </style>
@@ -482,6 +573,16 @@ const resultMessage = document.getElementById('resultMessage');
 const correctCount = document.getElementById('correctCount');
 const incorrectCount = document.getElementById('incorrectCount');
 
+// Shuffle array function
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
 // Load questions from CSV file
 async function loadQuestions() {
     try {
@@ -509,6 +610,9 @@ async function loadQuestions() {
                 });
             }
         }
+        
+        // Shuffle questions randomly
+        quizQuestions = shuffleArray(quizQuestions);
         
         console.log(`Loaded ${quizQuestions.length} questions successfully!`);
         startButton.disabled = false;
@@ -828,3 +932,5 @@ loadQuestions();
 </script>
 </body>
 </html>
+
+
